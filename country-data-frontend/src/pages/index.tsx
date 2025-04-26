@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import SearchBar from '../components/SearchBar';
+import CountryCard from '../components/CountryCard';
 
 export default function Home() {
   const [countries, setCountries] = useState([]);
@@ -30,41 +32,13 @@ export default function Home() {
 
   return (
     <div className="p-6">
-      {/* Search Input */}
-      <div className="mb-4">
-        <label className="block text-gray-700">
-          Search for a Country
-        </label>
-        <input
-          id="search"
-          type="text"
-          placeholder="Enter country name"
-          className="border border-gray-300"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-
-      {/* Display filtered countries */}
-      <div className="grid grid-cols-4">
+      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filteredCountries.length > 0 ? (
-          filteredCountries.map((country) => (
-            <div key={country.name} className="bg-white rounded-lg shadow-md p-4">
-              {/* Accessing the flag from the 'flag' property */}
-              {country.flag ? (
-                <img
-                  className="w-10 h-10 object-cover"
-                  src={country.flag}
-                  alt={`Flag of ${country.name}`}
-                />
-              ) : (
-                <p className="text-center">No Flag Available</p>
-              )}
-              <div className="mt-2 text-center">
-                <h2>{country.name}</h2>
-                <p>{country.region}</p>
-              </div>
-            </div>
+          filteredCountries.map((country, index) => (
+            <React.Fragment key={'country' + index}>
+              <CountryCard country={country} />
+            </React.Fragment>
           ))
         ) : (
           <p className="text-gray-500">No countries found.</p>
